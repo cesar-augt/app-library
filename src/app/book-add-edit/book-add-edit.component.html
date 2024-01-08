@@ -1,0 +1,58 @@
+<div mat-dialog-title>
+    <h1>Book Form</h1>
+</div>
+<form [formGroup]="bookForm" (ngSubmit)="onFormSubmit()">
+    <div mat-dialog-content class="content">
+        <div class="row">
+            <mat-form-field appearance="outline">
+                <mat-label>Title</mat-label>
+                <input matInput type="text" formControlName="title">
+                <mat-error *ngIf="bookForm.get('title')?.hasError('required')">
+                    Title is required.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Author</mat-label>
+                <input matInput formControlName="author">
+                <mat-error *ngIf="bookForm.get('author')?.hasError('required')">
+                    Author is required.
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-form-field appearance="outline">
+                <mat-label>Total Pages</mat-label>
+                <input matInput type="email" formControlName="count_pages">
+                <mat-error *ngIf="bookForm.get('count_pages')?.hasError('required')">
+                    Total pages is required.
+                  </mat-error>
+                  <mat-error *ngIf="bookForm.get('count_pages')?.hasError('pattern')">
+                    Only numbers.
+                  </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Date of Created</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="created">
+                <mat-error *ngIf="bookForm.get('created')?.hasError('required')">
+                    Date created is required.
+                </mat-error>
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-form-field appearance="outline">
+                <mat-label>Description</mat-label>
+                <input matInput  formControlName="description">
+                <mat-error *ngIf="bookForm.get('description')?.hasError('required')">
+                    Description is required.
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <div mat-dialog-actions class="action">
+        <button mat-raised-button type="button"  [mat-dialog-close]="false">Cancel</button>
+        <button mat-raised-button color="primary" [disabled]="bookForm.invalid" type="submit">{{data ? 'Update': 'Save'}}</button>
+    </div>
+</form>

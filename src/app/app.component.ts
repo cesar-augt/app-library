@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { EmpAddEditComponent } from './emp-add-edit/emp-add-edit.component';
-import { EmployeeService } from './services/employee.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { CoreService } from './core/core.service';
+import { WeatherService } from './weather.service';
+import { AuthService } from './services/auth/auth.service';
+import { BookAddEditComponent } from './book-add-edit/book-add-edit.component';
+import { BookService } from './services/book/book.service';
 
 @Component({
   selector: 'app-root',
@@ -15,45 +17,54 @@ import { CoreService } from './core/core.service';
 export class AppComponent implements OnInit {
   displayedColumns: string[] = [
     'id',
-    'firstName',
-    'lastName',
-    'email',
-    'dob',
-    'gender',
-    'education',
-    'company',
-    'experience',
-    'package',
+    'title',
+    'description',
+    'author',
+    'count_pages',
+    'created',
     'action',
   ];
   dataSource!: MatTableDataSource<any>;
+  weatherData: any;
+  baseUrlImages = 'https://assets.hgbrasil.com/weather/icons/conditions/';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private _dialog: MatDialog,
-    private _empService: EmployeeService,
-    private _coreService: CoreService
+    private _bookService: BookService,
+    private _coreService: CoreService,
+    private weatherService: WeatherService,
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
-    this.getEmployeeList();
+    this.getBookList();
+    this.getWeatherData();
   }
 
-  openAddEditEmpForm() {
-    const dialogRef = this._dialog.open(EmpAddEditComponent);
+  getWeatherData(): void {
+    this.weatherService.getWeather()
+      .subscribe(data => {
+        this.weatherData = data;
+      });
+  }
+
+
+  openAddEditBookForm() {
+    const dialogRef = this._dialog.open(BookAddEditComponent);
     dialogRef.afterClosed().subscribe({
       next: (val) => {
         if (val) {
-          this.getEmployeeList();
+          this.getBookList();
         }
       },
     });
   }
 
-  getEmployeeList() {
-    this._empService.getEmployeeList().subscribe({
+  getBookList() {
+    this._bookService.getBookList().subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res);
         this.dataSource.sort = this.sort;
@@ -72,25 +83,25 @@ export class AppComponent implements OnInit {
     }
   }
 
-  deleteEmployee(id: number) {
-    this._empService.deleteEmployee(id).subscribe({
+  deleteBook(id: number) {
+    this._bookService.deleteBook(id).subscribe({
       next: (res) => {
-        this._coreService.openSnackBar('Employee deleted!', 'done');
-        this.getEmployeeList();
+        this._coreService.openSnackBar('Book deleted!', 'done');
+        this.getBookList();
       },
       error: console.log,
     });
   }
 
   openEditForm(data: any) {
-    const dialogRef = this._dialog.open(EmpAddEditComponent, {
+    const dialogRef = this._dialog.open(BookAddEditComponent, {
       data,
     });
 
     dialogRef.afterClosed().subscribe({
       next: (val) => {
         if (val) {
-          this.getEmployeeList();
+          this.getBookList();
         }
       },
     });
