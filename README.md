@@ -1,6 +1,6 @@
-# Angular Project Template
+# library app
 
-Welcome to the Angular Project Template! This template provides a starting point for developing Angular applications.
+Angular Project to manage books.
 
 ## Pre requisites
 
