@@ -11,8 +11,8 @@ Before you begin, ensure you have the following software installed on your machi
 
 ## Getting Started
 
-1. Clone this repository: `git clone https://github.com/your-username/your-angular-project.git`
-2. Navigate to the project directory: `cd your-angular-project`
+1. Clone this repository: `git clone https://github.com/cesar-augt/app-library.git`
+2. Navigate to the project directory: `cd app-library`
 3. Install dependencies: `npm install`
 
 ## Development
